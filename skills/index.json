@@ -1,0 +1,58 @@
+{
+  "version": "v0.1.0",
+  "generatedAt": "2026-10-16T05:48:14.911Z",
+  "skills": [
+    {
+      "name": "angular-skill",
+      "files": [
+        "SKILL.md",
+        "references/architecture.md",
+        "references/clean-code.md",
+        "references/companions.md",
+        "references/member-hierarchy.md",
+        "references/security.md",
+        "references/state-and-data.md",
+        "references/styling.md",
+        "references/typescript.md"
+      ]
+    },
+    {
+      "name": "react-skill",
+      "files": [
+        "SKILL.md",
+        "references/architecture.md",
+        "references/clean-code.md",
+        "references/companions.md",
+        "references/member-hierarchy.md",
+        "references/security.md",
+        "references/state-and-data.md",
+        "references/styling.md",
+        "references/typescript.md"
+      ]
+    },
+    {
+      "name": "vue-skill",
+      "files": [
+        "SKILL.md",
+        "references/architecture.md",
+        "references/clean-code.md",
+        "references/companions.md",
+        "references/member-hierarchy.md",
+        "references/security.md",
+        "references/state-and-data.md",
+        "references/styling.md",
+        "references/typescript.md"
+      ]
+    },
+    {
+      "name": "vault-workflow",
+      "files": [
+        "SKILL.md",
+        "references/adr-template.md",
+        "references/devlog-conventions.md",
+        "references/devlog-template.md",
+        "references/investigation-workflow.md"
+      ]
+    }
+  ]
+}

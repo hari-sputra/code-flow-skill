@@ -1,0 +1,48 @@
+{
+  "name": "code-flow-skill",
+  "version": "0.1.0",
+  "description": "Install framework house-rule agent skills (Angular, React, Vue + vault workflow) into Kiro, Claude, Codex, and OpenCode from one command.",
+  "type": "module",
+  "bin": {
+    "code-flow-skill": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "agent-skills",
+    "kiro",
+    "claude",
+    "codex",
+    "opencode",
+    "angular",
+    "react",
+    "vue",
+    "coding-standards"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.0",
+    "@typescript-eslint/eslint-plugin": "8.45.0",
+    "@typescript-eslint/parser": "8.45.0",
+    "eslint": "9.17.0",
+    "tsx": "4.19.2",
+    "typescript": "5.9.2",
+    "vitest": "2.1.8"
+  }
+}

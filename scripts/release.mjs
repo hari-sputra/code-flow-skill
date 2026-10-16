@@ -24,7 +24,16 @@ if (!arg) {
   process.exit(1);
 }
 
+const isWindows = process.platform === 'win32';
 function run(cmd, args) {
+  // Only npm needs shell resolution on Windows (npm.cmd); git runs directly so
+  // commit messages with spaces/colons pass through as a single argv entry.
+  if (cmd === 'npm') {
+    const file = isWindows ? 'npm.cmd' : 'npm';
+    return execFileSync(file, args, { stdio: ['ignore', 'pipe', 'inherit'], shell: isWindows })
+      .toString()
+      .trim();
+  }
   return execFileSync(cmd, args, { stdio: ['ignore', 'pipe', 'inherit'] }).toString().trim();
 }
 
@@ -39,7 +48,7 @@ index.version = tag;
 writeFileSync(indexPath, JSON.stringify(index, null, 2) + '\n', 'utf8');
 
 // 3. commit both
-run('git', ['add', 'package.json', 'package-lock.json', 'skills/index.json']);
+run('git', ['add', 'package.json', 'package-lock.json', 'skills/index.json', 'scripts/release.mjs']);
 run('git', ['commit', '-m', `release: ${tag}`]);
 
 console.log(`\nCommitted release ${tag}.`);

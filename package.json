@@ -1,6 +1,6 @@
 {
   "name": "code-flow-skill",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Install framework house-rule agent skills (Angular, React, Vue + vault workflow) into Kiro, Claude, Codex, and OpenCode from one command.",
   "type": "module",
   "bin": {

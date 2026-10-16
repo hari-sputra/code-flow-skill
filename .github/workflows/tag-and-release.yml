@@ -1,4 +1,4 @@
-name: Tag and release on version bump
+name: Release and publish on version bump
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  tag-and-release:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,25 +18,66 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
       - name: Read package version
         id: pkg
         shell: bash
         run: echo "version=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
-      - name: Check whether the tag already exists
+      - name: Check whether this version is already published
         id: check
         shell: bash
         run: |
           TAG="${{ steps.pkg.outputs.version }}"
+          VER="${TAG#v}"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-            echo "Tag $TAG already exists; nothing to do."
+            echo "tag_exists=true" >> "$GITHUB_OUTPUT"
           else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "tag_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+          if npm view "code-flow-skill@$VER" version >/dev/null 2>&1; then
+            echo "npm_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "npm_exists=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Install dependencies
+        if: steps.check.outputs.npm_exists == 'false'
+        run: npm ci
+
+      - name: Verify manifest version matches package version
+        if: steps.check.outputs.npm_exists == 'false'
+        shell: bash
+        run: |
+          PKG="v$(node -p "require('./package.json').version")"
+          MAN=$(node -p "require('./skills/index.json').version")
+          echo "package.json: $PKG   skills/index.json: $MAN"
+          if [ "$PKG" != "$MAN" ]; then
+            echo "::error::skills/index.json version ($MAN) does not match package.json ($PKG)."
+            exit 1
+          fi
+
+      - name: Test
+        if: steps.check.outputs.npm_exists == 'false'
+        run: npm test
+
+      - name: Build
+        if: steps.check.outputs.npm_exists == 'false'
+        run: npm run build
+
+      - name: Publish to npm
+        if: steps.check.outputs.npm_exists == 'false'
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Create tag and GitHub Release
-        if: steps.check.outputs.exists == 'false'
+        if: steps.check.outputs.tag_exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.pkg.outputs.version }}

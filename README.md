@@ -53,6 +53,17 @@ All framework skills enforce: no `any`, small components with zero logic, separa
 - Node.js 18+ (uses the built-in `fetch`)
 - Internet access on first install (skills are fetched from GitHub)
 
+## Releasing (maintainer)
+
+Rilis baru dengan satu command, tag + GitHub Release + npm publish otomatis via CI:
+
+```bash
+npm run release -- patch   # bump + commit
+git push                   # CI tags, releases, and publishes
+```
+
+Panduan CLI lengkap (termasuk cara push bersama tag secara manual) ada di **[RELEASING.md](./RELEASING.md)**. Alur author/publish rules ada di **[PUBLISHING.md](./PUBLISHING.md)**.
+
 ## License
 
 MIT

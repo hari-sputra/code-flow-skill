@@ -1,4 +1,4 @@
-export const GITHUB_USER: string = '__GH_USER__';
+export const GITHUB_USER: string = 'hari-sputra';
 export const GITHUB_REPO = 'code-flow-skill';
 
 export const SKILL_NAMES = ['angular-skill', 'react-skill', 'vue-skill', 'vault-workflow'] as const;
